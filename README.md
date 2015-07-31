@@ -88,7 +88,7 @@ User.findById(id).then(function(user){
     "diff": "[{'value':'bkniffler1','added':true}]",
     "createdAt": "2015-07-31 17:02:35.186+02",
     "updatedAt": "2015-07-31 17:02:35.211+02",
-    "userId": 1
+    "revisionId": 1
   },
   {
     "id": 2,
@@ -97,7 +97,7 @@ User.findById(id).then(function(user){
     "diff": "[{'value':'0','added':true}]",
     "createdAt": "2015-07-31 17:02:35.187+02",
     "updatedAt": "2015-07-31 17:02:35.226+02",
-    "userId": 1
+    "revisionId": 1
   },
   {
     "id": 3,
@@ -106,7 +106,7 @@ User.findById(id).then(function(user){
     "diff": "[{'count':9,'value':'bkniffler'},{",
     "createdAt": "2015-07-31 17:02:35.244+02",
     "updatedAt": "2015-07-31 17:02:35.284+02",
-    "userId": 2
+    "revisionId": 2
   },
   {
     "id": 4,
@@ -115,7 +115,7 @@ User.findById(id).then(function(user){
     "diff": "[{'count':1,'removed':true,'value':'0'},{'count':1,'added':true,'value':'1'}]",
     "createdAt": "2015-07-31 17:02:35.245+02",
     "updatedAt": "2015-07-31 17:02:35.281+02",
-    "userId": 2
+    "revisionId": 2
   }
 ]
 ```
