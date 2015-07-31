@@ -31,7 +31,8 @@ revs.defineModels();
 "4";"isAdmin";"{"kind":"E","path":["isAdmin"],"lhs":false,"rhs":true}";"[{"count":1,"removed":true,"value":"0"},{"count":1,"added":true,"value":"1"}]";"2015-07-31 17:02:35.245+02";"2015-07-31 17:02:35.281+02";"2"
 ```
 ## Options
-```
+```javascript
+// Options and default values
 var options = {
    // Exclude fields from audit
    exclude: ["id", "createdAt", "updatedAt"],
@@ -48,7 +49,7 @@ var options = {
 
 ## Get the current user
 I don't know of any good implementation for this, as a workaround I inject a context object to documents I'm about to save. These get picked up by sequelize-revisions.
-```
+```javascript
 User.findById(id).then(function(user){
    if(!user){
       return next(new Error("User with id " + id + " not found"));
