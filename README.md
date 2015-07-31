@@ -10,14 +10,33 @@ npm install sequelize-revisions --save
 
 ## Usage
 ```javascript
+// Init sequelize
 var sequelize = new Sequelize(..., {
    ...
 });
 
-var revs = require("sequelize-revisions")(sequelize, options);
-.. define other models, such as User
-// Using after user definition if you want association to user
-revs.defineModels();
+// Init revisions
+var Revisions = require("sequelize-revisions")(sequelize, options);
+
+// Define your models
+var User = app.db.define("User", {
+   username: {
+      type: Sequelize.TEXT,
+      allowNull: false,
+      unique: true
+   },
+   isAdmin: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+      allowNull: false
+   }
+});
+
+// Enable revisions on model
+User.enableRevisions();
+
+// Define revision models
+Revisions.defineModels();
 ```
 
 ## Options
