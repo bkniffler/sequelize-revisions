@@ -3,6 +3,11 @@ Enables document revisions and the exact changes of each revision.
 The changes make use of https://github.com/kpdecker/jsdiff to compose differences that might be displayed in a nice way:
 <img src="https://raw.githubusercontent.com/kpdecker/jsdiff/master/images/node_example.png" alt="Example">
 
+## Install
+```shell
+npm install sequelize-revisions --save
+```
+
 ## Usage
 ```javascript
 var sequelize = new Sequelize(..., {
