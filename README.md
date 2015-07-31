@@ -9,9 +9,9 @@ var sequelize = new Sequelize(..., {
    ...
 });
 
-var revs = require("sequelize-revisions")(sequelize, {...});
+var revs = require("sequelize-revisions")(sequelize, options);
 .. define other models, such as User
-// Using after user definition
+// Using after user definition if you want association to user
 revs.defineModels();
 ```
 
