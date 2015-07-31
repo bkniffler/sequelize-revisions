@@ -20,21 +20,6 @@ var revs = require("sequelize-revisions")(sequelize, options);
 revs.defineModels();
 ```
 
-## Example output
-**Revisions**
-```csv
-"id";"model";"documentId";"revision";"document";"createdAt";"updatedAt";"userId"
-"1";"User";"1";"1";"{"isAdmin":false,"revision":1,"id":1,"username":"bkniffler1","hash":"xxx","salt":"xxx","activationKey":"6addb6480f298340","updatedAt":"2015-07-31T15:02:35.111Z","createdAt":"2015-07-31T15:02:35.111Z","resetPasswordKey":null}";"2015-07-31 17:02:35.159+02";"2015-07-31 17:02:35.159+02";""
-"2";"User";"1";"2";"{"isAdmin":true,"revision":2,"id":1,"username":"bkniffler","hash":"xxx","salt":"xxx","activationKey":"6addb6480f298340","updatedAt":"2015-07-31T15:02:35.166Z","createdAt":"2015-07-31T15:02:35.111Z","resetPasswordKey":null}";"2015-07-31 17:02:35.198+02";"2015-07-31 17:02:35.198+02";"1"
-```
-**RevisionChanges**
-```csv
-"id";"username";"document";"diff";"createdAt";"updatedAt";"userId"
-"1";"username";"{"kind":"N","path":["username"],"rhs":"bkniffler1"}";"[{"value":"bkniffler1","added":true}]";"2015-07-31 17:02:35.186+02";"2015-07-31 17:02:35.211+02";"1"
-"2";"isAdmin";"{"kind":"N","path":["isAdmin"],"rhs":false}";"[{"value":"0","added":true}]";"2015-07-31 17:02:35.187+02";"2015-07-31 17:02:35.226+02";"1"
-"3";"username";"{"kind":"E","path":["username"],"lhs":"bkniffler1","rhs":"bkniffler"}";"[{"count":9,"value":"bkniffler"},{"count":1,"removed":true,"value":"1"}]";"2015-07-31 17:02:35.244+02";"2015-07-31 17:02:35.284+02";"2"
-"4";"isAdmin";"{"kind":"E","path":["isAdmin"],"lhs":false,"rhs":true}";"[{"count":1,"removed":true,"value":"0"},{"count":1,"added":true,"value":"1"}]";"2015-07-31 17:02:35.245+02";"2015-07-31 17:02:35.281+02";"2"
-```
 ## Options
 ```javascript
 // Options and default values
@@ -67,4 +52,70 @@ User.findById(id).then(function(user){
 }).catch(next);
 ```
 
-
+## Example output
+**Revisions**
+```json
+[
+  {
+    "id": 1,
+    "model": "User",
+    "documentId": 1,
+    "revision": 1,
+    "document": "{'isAdmin':false,'revision':1,'id':1,'username':'bkniffler1','hash':'xxx','salt':'xxx','activationKey':'6addb6480f298340','updatedAt':'2015-07-31T15:02:35.111Z','createdAt':'2015-07-31T15:02:35.111Z','resetPasswordKey':null}",
+    "createdAt": "2015-07-31 17:02:35.159+02",
+    "updatedAt": "2015-07-31 17:02:35.159+02",
+    "userId": 0
+  },
+  {
+    "id": 2,
+    "model": "User",
+    "documentId": 1,
+    "revision": 2,
+    "document": "{'isAdmin':true,'revision':2,'id':1,'username':'bkniffler','hash':'xxx','salt':'xxx','activationKey':'6addb6480f298340','updatedAt':'2015-07-31T15:02:35.166Z','createdAt':'2015-07-31T15:02:35.111Z','resetPasswordKey':null}",
+    "createdAt": "2015-07-31 17:02:35.198+02",
+    "updatedAt": "2015-07-31 17:02:35.198+02",
+    "userId": 1
+  }
+]
+```
+**RevisionChanges**
+```json
+[
+  {
+    "id": 1,
+    "path": "username",
+    "document": "{'kind':'N','path':['username'],'rhs':'bkniffler1'}",
+    "diff": "[{'value':'bkniffler1','added':true}]",
+    "createdAt": "2015-07-31 17:02:35.186+02",
+    "updatedAt": "2015-07-31 17:02:35.211+02",
+    "userId": 1
+  },
+  {
+    "id": 2,
+    "path": "isAdmin",
+    "document": "{'kind':'N','path':['isAdmin'],'rhs':false}",
+    "diff": "[{'value':'0','added':true}]",
+    "createdAt": "2015-07-31 17:02:35.187+02",
+    "updatedAt": "2015-07-31 17:02:35.226+02",
+    "userId": 1
+  },
+  {
+    "id": 3,
+    "path": "username",
+    "document": "{'kind':'E','path':['username'],'lhs':'bkniffler1','rhs':'bkniffler'}",
+    "diff": "[{'count':9,'value':'bkniffler'},{",
+    "createdAt": "2015-07-31 17:02:35.244+02",
+    "updatedAt": "2015-07-31 17:02:35.284+02",
+    "userId": 2
+  },
+  {
+    "id": 4,
+    "path": "isAdmin",
+    "document": "{'kind':'E','path':['isAdmin'],'lhs':false,'rhs':true}",
+    "diff": "[{'count':1,'removed':true,'value':'0'},{'count':1,'added':true,'value':'1'}]",
+    "createdAt": "2015-07-31 17:02:35.245+02",
+    "updatedAt": "2015-07-31 17:02:35.281+02",
+    "userId": 2
+  }
+]
+```
