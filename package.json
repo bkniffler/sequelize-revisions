@@ -1,6 +1,6 @@
 {
   "name": "sequelize-revisions",
-  "description": "Enable revisioning and trails on your sequelize models",
+  "description": "Enables document revisions and the exact changes of each revision",
   "private": false,
   "version": "0.0.1",
   "main": "index.js",

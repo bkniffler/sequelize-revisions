@@ -1,6 +1,6 @@
 # Sequelize-Revisions
-Enables document revisions and the trails of each revision.
-The trails make use of https://github.com/kpdecker/jsdiff to compose differences that might be displayed in a nice way:
+Enables document revisions and the exact changes of each revision.
+The changes make use of https://github.com/kpdecker/jsdiff to compose differences that might be displayed in a nice way:
 <img src="https://raw.githubusercontent.com/kpdecker/jsdiff/master/images/node_example.png" alt="Example">
 
 ## Usage
@@ -22,7 +22,7 @@ revs.defineModels();
 "1";"User";"1";"1";"{"isAdmin":false,"revision":1,"id":1,"username":"bkniffler1","hash":"xxx","salt":"xxx","activationKey":"6addb6480f298340","updatedAt":"2015-07-31T15:02:35.111Z","createdAt":"2015-07-31T15:02:35.111Z","resetPasswordKey":null}";"2015-07-31 17:02:35.159+02";"2015-07-31 17:02:35.159+02";""
 "2";"User";"1";"2";"{"isAdmin":true,"revision":2,"id":1,"username":"bkniffler","hash":"xxx","salt":"xxx","activationKey":"6addb6480f298340","updatedAt":"2015-07-31T15:02:35.166Z","createdAt":"2015-07-31T15:02:35.111Z","resetPasswordKey":null}";"2015-07-31 17:02:35.198+02";"2015-07-31 17:02:35.198+02";"1"
 ```
-**RevisionTrails**
+**RevisionChanges**
 ```csv
 "id";"username";"document";"diff";"createdAt";"updatedAt";"userId"
 "1";"username";"{"kind":"N","path":["username"],"rhs":"bkniffler1"}";"[{"value":"bkniffler1","added":true}]";"2015-07-31 17:02:35.186+02";"2015-07-31 17:02:35.211+02";"1"
@@ -39,8 +39,8 @@ var options = {
    revisionAttribute: "revision",
    // Revision model name
    revisionModel: "Revision",
-   // RevisionTrails model
-   revisionTrailModel: "RevisionTrail",
+   // RevisionChanges model
+   revisionChangeModel: "RevisionChanges",
    // Log
    log: console.log
 }

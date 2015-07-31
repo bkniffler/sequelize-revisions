@@ -11,8 +11,8 @@ var options = {
    revisionAttribute: "revision",
    // Revision model name
    revisionModel: "Revision",
-   // RevisionTrails model
-   revisionTrailModel: "RevisionTrail",
+   // RevisionChanges model
+   revisionChangeModel: "RevisionChange",
    // Log
    log: console.log
 }
@@ -32,8 +32,8 @@ module.exports = function(sequelize, options){
    if(!options.revisionModel){
       options.revisionModel = "Revision";
    }
-   if(!options.revisionTrailModel){
-      options.revisionTrailModel = "RevisionTrail";
+   if(!options.revisionChangeModel){
+      options.revisionChangeModel = "RevisionChange";
    }
    var log = options.log || console.log;
 
@@ -71,7 +71,7 @@ module.exports = function(sequelize, options){
    var after = function(instance, opt){
       if(instance._changed[options.revisionAttribute] === true){
          var Revision = sequelize.model(options.revisionModel);
-         var RevisionTrail = sequelize.model(options.revisionTrailModel);
+         var RevisionChange = sequelize.model(options.revisionChangeModel);
 
          var previousVersion = instance._previousDataValues;
          var currentVersion = instance.dataValues;
@@ -97,7 +97,7 @@ module.exports = function(sequelize, options){
             diffs.forEach(function(difference){
                var o = convertToString(difference.lhs);
                var n = convertToString(difference.rhs);
-               var d = RevisionTrail.build({
+               var d = RevisionChange.build({
                   path: difference.path.join(","),
                   document: difference,
                   //revisionId: data.id,
@@ -105,7 +105,7 @@ module.exports = function(sequelize, options){
                });
                d.save().then(function(d){
                   // Add diff to revision
-                  revision.addRevisionTrail(d);
+                  revision.addRevisionChange(d);
                }).catch(log);
             });
          }).catch(log);
@@ -134,8 +134,8 @@ module.exports = function(sequelize, options){
                allowNull: false
             }
          });
-         // RevisionTrail model
-         var RevisionTrail = sequelize.define(options.revisionTrailModel, {
+         // RevisionChange model
+         var RevisionChange = sequelize.define(options.revisionChangeModel, {
             path: {
                type: Sequelize.TEXT,
                allowNull: false
@@ -150,7 +150,7 @@ module.exports = function(sequelize, options){
             }
          });
          // Set associations
-         Revision.hasMany(RevisionTrail, {
+         Revision.hasMany(RevisionChange, {
             foreignKey: "revisionId",
             constraints: true
          });
