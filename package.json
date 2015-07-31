@@ -1,0 +1,52 @@
+{
+  "name": "sequelize-revisions",
+  "description": "Enable revisioning and trails on your sequelize models",
+  "private": false,
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": {
+    "name": "Benjamin Kniffler",
+    "email": "bkniffler@me.com"
+  },
+  "contributors": [
+    {
+      "name": "Benjamin Kniffler",
+      "email": "bkniffler@me.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bkniffler/sequelize-revisions.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bkniffler/sequelize-revisions/issues"
+  },
+  "scripts": {},
+  "dependencies": {
+    "deep-diff": "^0.3.2",
+    "diff": "^1.4.0",
+    "lodash": "^3.10.0",
+    "object-path": "^0.9.2"
+  },
+  "devDependencies": {},
+  "peerDependencies": {
+    "sequelize": "2.0.0 - 3.x.x"
+  },
+  "readmeFilename": "README.md",
+  "keywords": [
+    "sequelize",
+    "sequelize-plugin",
+    "revisions",
+    "audit",
+    "nodejs"
+  ],
+  "engines": {
+    "node": ">=0.6.21"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/bkniffler/sequelize-revisions/raw/master/License"
+    }
+  ]
+}
