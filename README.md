@@ -69,6 +69,8 @@ User.findById(id).then(function(user){
       res.json(user);
    }).catch(next);
 }).catch(next);
+
+**Update: Use express middleware https://github.com/bkniffler/express-sequelize-user to get the current user into your objects.**
 ```
 
 ## Example output
