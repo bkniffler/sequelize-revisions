@@ -80,9 +80,6 @@ module.exports = function(sequelize, options){
             user = instance.context.user;
          }
 
-         // Get diffs
-         var diffs = getDifferences(previousVersion, currentVersion, options.exclude);
-
          // Build revision
          var revision = Revision.build({
             model: opt.model.name,
@@ -94,21 +91,24 @@ module.exports = function(sequelize, options){
             userId: options.userModel && user ? user.id : null
          });
 
+         // Get diffs
+         var diffs = getDifferences(previousVersion, currentVersion, options.exclude);
+
          // Save revision
          revision.save().then(function(revision){
             // Loop diffs and create a revision-diff for each
             diffs.forEach(function(difference){
-               var o = convertToString(difference.lhs);
-               var n = convertToString(difference.rhs);
+               var o = convertToString(difference.item ? difference.item.lhs : difference.lhs);
+               var n = convertToString(difference.item ? difference.item.rhs : difference.rhs);
                var d = RevisionChange.build({
-                  path: difference.path.join(","),
+                  path: difference.path[0],
                   document: difference,
                   //revisionId: data.id,
                   diff: o || n ? jsdiff.diffChars(o, n) : []
                });
                d.save().then(function(d){
                   // Add diff to revision
-                  revision.addRevisionChange(d);
+                  revision.addChange(d);
                }).catch(log);
             });
          }).catch(log);
@@ -155,13 +155,15 @@ module.exports = function(sequelize, options){
          // Set associations
          Revision.hasMany(RevisionChange, {
             foreignKey: "revisionId",
-            constraints: true
+            constraints: true,
+            as: "changes"
          });
          // Associate with user if necessary
          if (options.userModel) {
             Revision.belongsTo(sequelize.model(options.userModel), {
                foreignKey: "userId",
-               constraints: true
+               constraints: true,
+               as: "user"
             });
          }
          return Revision;
