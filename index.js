@@ -59,22 +59,30 @@ module.exports = function(sequelize, options){
 
    // Before create/update augment revision
    var before = function(instance, opt){
-      var changedValues = instance._changed;
-      var changed = Object.keys(changedValues).some((x)=>changedValues[x] === true);
+      var previousVersion = instance._previousDataValues;
+      var currentVersion = instance.dataValues;
 
-      if(changed === true){
+      // Get diffs
+      var diffs = getDifferences(previousVersion, currentVersion, options.exclude);
+
+      if(diffs && diffs.length > 0){
          instance.set(options.revisionAttribute, (instance.get(options.revisionAttribute) || 0) + 1);
+         if(!instance.context){
+            instance.context = {};
+         }
+         instance.context.diffs = diffs;
       }
    };
 
    // After create/update store diffs
    var after = function(instance, opt){
-      if(instance._changed[options.revisionAttribute] === true){
+      if(instance.context && instance.context.diffs && instance.context.diffs.length > 0){
          var Revision = sequelize.model(options.revisionModel);
          var RevisionChange = sequelize.model(options.revisionChangeModel);
-
+         var diffs = instance.context.diffs;
          var previousVersion = instance._previousDataValues;
          var currentVersion = instance.dataValues;
+
          var user = opt.user;
          if(!user && instance.context && instance.context.user){
             user = instance.context.user;
@@ -91,8 +99,6 @@ module.exports = function(sequelize, options){
             userId: options.userModel && user ? user.id : null
          });
 
-         // Get diffs
-         var diffs = getDifferences(previousVersion, currentVersion, options.exclude);
 
          // Save revision
          revision.save().then(function(revision){
