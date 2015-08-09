@@ -4,19 +4,6 @@ var objectPath = require("object-path");
 var jsdiff = require("diff");
 var _ = require('lodash');
 
-var options = {
-   // Exclude fields from audit
-   exclude: ["id", "createdAt", "updatedAt"],
-   // Revision field on other documents
-   revisionAttribute: "revision",
-   // Revision model name
-   revisionModel: "Revision",
-   // RevisionChanges model
-   revisionChangeModel: "RevisionChange",
-   // Log
-   log: console.log
-}
-
 module.exports = function(sequelize, options){
    if(!options){
       options = {};
@@ -30,10 +17,10 @@ module.exports = function(sequelize, options){
       options.revisionAttribute = "revision";
    }
    if(!options.revisionModel){
-      options.revisionModel = "Revision";
+      options.revisionModel = "revision";
    }
    if(!options.revisionChangeModel){
-      options.revisionChangeModel = "RevisionChange";
+      options.revisionChangeModel = "revision-change";
    }
    var log = options.log || console.log;
 
@@ -61,6 +48,9 @@ module.exports = function(sequelize, options){
    var before = function(instance, opt){
       var previousVersion = instance._previousDataValues;
       var currentVersion = instance.dataValues;
+
+      // Disallow change of revision
+      instance.set(options.revisionAttribute, instance._previousDataValues[options.revisionAttribute]);
 
       // Get diffs
       var diffs = getDifferences(previousVersion, currentVersion, options.exclude);
