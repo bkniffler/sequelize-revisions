@@ -22,6 +22,9 @@ module.exports = function(sequelize, options){
    if(!options.revisionChangeModel){
       options.revisionChangeModel = "revision-change";
    }
+   if(options.UUID === undefined){
+      options.UUID = false;
+   }
    var log = options.log || console.log;
 
    // Extend model prototype with "isRevisionable" function
@@ -89,7 +92,6 @@ module.exports = function(sequelize, options){
             userId: options.userModel && user ? user.id : null
          });
 
-
          // Save revision
          revision.save().then(function(revision){
             // Loop diffs and create a revision-diff for each
@@ -114,14 +116,13 @@ module.exports = function(sequelize, options){
    return {
       // Return defineModels()
       defineModels: function(){
-         // Revision model
-         var Revision = sequelize.define(options.revisionModel, {
+         var attributes = {
             model: {
                type: Sequelize.TEXT,
                allowNull: false
             },
             documentId: {
-               type: Sequelize.INTEGER,
+               type: Sequelize.UUID,
                allowNull: false
             },
             revision: {
@@ -132,9 +133,19 @@ module.exports = function(sequelize, options){
                type: Sequelize.JSON,
                allowNull: false
             }
-         });
-         // RevisionChange model
-         var RevisionChange = sequelize.define(options.revisionChangeModel, {
+         };
+         if(options.UUID){
+            attributes.id = {
+               primaryKey: true,
+               type: Sequelize.UUID,
+               defaultValue: Sequelize.UUIDV4
+            };
+            attributes.documentId.type = Sequelize.UUID;
+         }
+         // Revision model
+         var Revision = sequelize.define(options.revisionModel, attributes);
+
+         attributes = {
             path: {
                type: Sequelize.TEXT,
                allowNull: false
@@ -147,7 +158,17 @@ module.exports = function(sequelize, options){
                type: Sequelize.JSON,
                allowNull: false
             }
-         });
+         };
+         if(options.UUID){
+            attributes.id = {
+               primaryKey: true,
+               type: Sequelize.UUID,
+               defaultValue: Sequelize.UUIDV4
+            };
+         }
+
+         // RevisionChange model
+         var RevisionChange = sequelize.define(options.revisionChangeModel, attributes);
          // Set associations
          Revision.hasMany(RevisionChange, {
             foreignKey: "revisionId",
