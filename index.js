@@ -1,6 +1,5 @@
 var Sequelize = require("sequelize");
 var diff = require("deep-diff").diff;
-var objectPath = require("object-path");
 var jsdiff = require("diff");
 var _ = require('lodash');
 
